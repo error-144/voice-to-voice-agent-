@@ -1,3 +1,4 @@
+import json
 import logging
 import sounddevice as sd
 from dotenv import load_dotenv
@@ -15,7 +16,6 @@ from livekit.agents import (
 )
 from livekit.agents.voice import MetricsCollectedEvent
 
-
 from livekit.plugins import (
     openai,
     speechmatics,
@@ -23,10 +23,7 @@ from livekit.plugins import (
     murf,
 )
 
-
-
 from livekit.plugins.turn_detector.multilingual import MultilingualModel
-from livekit.plugins.speechmatics.types import AdditionalVocabEntry
 from livekit.plugins.speechmatics.stt import OperatingPoint
 
 
@@ -54,8 +51,6 @@ class Assistant(Agent):
             "Your interface with users will be voice. "
             "You should use short and concise responses, avoiding usage of unpronounceable punctuation. "
         )
-        
-        
         
         super().__init__(
             instructions=base_instructions,
@@ -128,7 +123,6 @@ async def entrypoint(ctx: JobContext):
     context = None
     try:
         if ctx.room.metadata:
-            import json
             context = json.loads(ctx.room.metadata)
             logger.info(f"Loaded context from room metadata: {context}")
     except Exception as e:
